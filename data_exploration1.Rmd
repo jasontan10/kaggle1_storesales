@@ -1,0 +1,47 @@
+---
+title: "data_exploration"
+author: "JT Analytics"
+date: "May 16, 2017"
+output:
+    md_document:
+        variant: markdown_github
+    #html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dtplyr)
+library(data.table)
+library(ggplot2)
+library(knitr)
+```
+
+## Introduction
+
+Please include introduction here.
+
+## Loading of data
+
+Let's load up our data. We have two main CSV files given from the Kaggle website:
+
+```{r data}
+dt_train <- fread("train.csv")
+dt_store <- fread("store.csv")
+```
+
+## Taking a peek at the data
+
+Let's first look at the data we have by looking at the first few rows.
+
+### train.csv
+
+```{r}
+kable(head(dt_train), caption = "First few rows of train.csv")
+```
+
+### store.csv
+
+```{r}
+kable(head(dt_store), caption = "First few rows of store.csv")
+```
