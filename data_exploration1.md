@@ -3,6 +3,11 @@ Introduction
 
 Please include introduction here.
 
+Loading of data
+---------------
+
+Let's load up our data. We have two main CSV files given from the Kaggle website:
+
 ``` r
 dt_train <- fread("train.csv")
 dt_store <- fread("store.csv")
