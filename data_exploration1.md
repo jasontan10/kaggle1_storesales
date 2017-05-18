@@ -292,3 +292,32 @@ Let's look at one of these dates and see the percentage of stores that were stil
     ## 38.74% stores were open
 
 Later on, let's try to find out what may have cause these stores to be open still. Could public holiday just be limited to certain areas?
+
+Sales
+-----
+
+This is the main part of the analysis, and what we want to predict in the future.
+
+#### Histogram
+
+Let's start with the histogram of Sales (not including Closed) ![](data_exploration1_files/figure-markdown_github/unnamed-chunk-24-1.png) ![](data_exploration1_files/figure-markdown_github/unnamed-chunk-25-1.png)
+
+Sales vs Number of Stores Open
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-26-1.png)
+
+Yearly Sales
+
+    ## Warning in gsum(Sales): Group 1 summed to more than type 'integer' can hold
+    ## so the result has been coerced to 'numeric' automatically, for convenience.
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
+Ratio of Yearly Sales to Stores Open
+
+    ##    Year YearlySalesRatio
+    ## 1: 2013         6814.392
+    ## 2: 2014         7025.404
+    ## 3: 2015         7088.127
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-28-1.png)
