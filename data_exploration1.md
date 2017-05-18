@@ -230,6 +230,42 @@ tail(dt_train[,.(DaysOpen = sum(Open)), by = Store][order(-DaysOpen)], 10)
     ##  9:   348      597
     ## 10:   644      592
 
+Were all of the stores open since day 1 of our data set?
+
+``` r
+cat(round(dt_train[Date == "2013-01-01" & Open == 1, .N]/dt_train[Date == "2013-01-01", .N]*100,2), "% stores open", "\n", sep ="")
+```
+
+    ## 1.53% stores open
+
+Well that isn't much. Probably because of New Year.
+
+``` r
+cat(round(dt_train[Date == "2013-01-02" & Open == 1, .N]/dt_train[Date == "2013-01-02", .N]*100,2), "% stores open", "\n", sep ="")
+```
+
+    ## 99.64% stores open
+
+That looks better.
+
+Let's plot the % of stores open across the time period without including StateHoliday, SchoolHoliday, and Sundays (for all stores):
+
+``` r
+dt_state <- dcast(dt_train, Date ~ StateHoliday, fun = length, value.var = "StateHoliday")
+dt_school <- dcast(dt_train, Date ~ SchoolHoliday, fun = length, value.var = "SchoolHoliday")
+setkeyv(dt_state, "Date")
+setkeyv(dt_school, "Date")
+dt_open <- dt_train
+setkeyv(dt_open, "Date")
+dt_open <- dt_open[DayOfWeek != 7,.(open_perc = sum(Open)/.N), by = Date][dt_state][dt_school]
+
+ggplot(dt_open[a == 0 & b == 0 & c == 0 & `1` == 0], aes(Date, open_perc)) + geom_point()
+```
+
+    ## Warning: Removed 106 rows containing missing values (geom_point).
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-15-1.png)
+
 #### Promo
 
 Indicates whether a store is running a promo on that day.
@@ -323,3 +359,68 @@ We have to just keep this in mind that having a Promo does not mean the store wa
 #### StateHoliday
 
 a -&gt; public holiday b -&gt; Easter holiday c -&gt; Christmas 0 -&gt; None
+
+Let's check the integrity of the StateHoliday. We want to make sure that at a given StateHoliday, all of the stores have the StateHoliday field correctly identified. For example, during Christmas (StateHoliday = c), are there any stores that do have StateHoliday != c?
+
+``` r
+# Get the dates where StateHoliday = a, b, c
+date_sh_a = data.table( a = unique(dt_train[StateHoliday == "a", Date]))
+date_sh_b = data.table( b = unique(dt_train[StateHoliday == "b", Date]))
+date_sh_c = data.table( c = unique(dt_train[StateHoliday == "c", Date]))
+setkeyv(date_sh_a, "a")
+setkeyv(date_sh_b, "b")
+setkeyv(date_sh_c, "c")
+
+# List down the unique list of StateHoliday at those dates per StateHoliday
+unique(dt2[date_sh_a, StateHoliday])
+```
+
+    ## [1] "a" "0"
+
+``` r
+unique(dt2[date_sh_b, StateHoliday])
+```
+
+    ## [1] "b"
+
+``` r
+unique(dt2[date_sh_c, StateHoliday])
+```
+
+    ## [1] "c"
+
+Let us investigate Public Holiday. Can we find the dates where StateHoliday is not only a?
+
+``` r
+unique(dt2[date_sh_a][StateHoliday == "0", Date])
+```
+
+    ##  [1] "2013-01-06" "2013-05-30" "2013-08-15" "2013-10-31" "2013-11-01"
+    ##  [6] "2013-11-20" "2014-01-06" "2014-06-19" "2014-10-31" "2014-11-01"
+    ## [11] "2014-11-19" "2015-01-01" "2015-01-06" "2015-06-04"
+
+Let's look at one of these dates and see the percentage of stores that were still open:
+
+``` r
+# For example, let's look at the most recent, 2015-06-04
+
+open <- dt2[Date == "2015-06-04" & Open == 1, .N]
+total <- dt2[Date == "2015-06-04", .N]
+cat(open, "stores were open", "\n")  
+```
+
+    ## 432 stores were open
+
+``` r
+cat(total, "total stores recorded in that date", "\n")  
+```
+
+    ## 1115 total stores recorded in that date
+
+``` r
+cat(round(open/total*100,2), "% stores were open", "\n", sep = "")  
+```
+
+    ## 38.74% stores were open
+
+Later on, let's try to find out what may have cause these stores to be open still. Could public holiday just be limited to certain areas?
