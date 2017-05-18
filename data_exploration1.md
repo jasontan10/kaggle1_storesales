@@ -1,3 +1,5 @@
+    ## Warning: package 'knitr' was built under R version 3.3.3
+
 Introduction
 ------------
 
