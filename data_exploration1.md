@@ -302,16 +302,168 @@ This is the main part of the analysis, and what we want to predict in the future
 
 Let's start with the histogram of Sales (not including Closed) ![](data_exploration1_files/figure-markdown_github/unnamed-chunk-24-1.png) ![](data_exploration1_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
-Sales vs Number of Stores Open
+Ratio of Monthly Sales to Stores Open
+
+    ##     Month MonthlySalesRatio
+    ##  1:     1          6563.690
+    ##  2:     2          6589.166
+    ##  3:     3          6976.412
+    ##  4:     4          7046.228
+    ##  5:     5          7106.453
+    ##  6:     6          7000.978
+    ##  7:     7          6952.682
+    ##  8:     8          6648.985
+    ##  9:     9          6546.343
+    ## 10:    10          6602.843
+    ## 11:    11          7188.554
+    ## 12:    12          8608.957
 
 ![](data_exploration1_files/figure-markdown_github/unnamed-chunk-26-1.png)
+
+December has a high Sales/Open ratio. Let's redo the plot after removing promos:
+
+Ratio of Monthly Sales to Stores Open (no promos, Promo2 still included)
+
+    ##     Month MonthlySalesRatio
+    ##  1:     1          5591.904
+    ##  2:     2          5747.813
+    ##  3:     3          5805.724
+    ##  4:     4          5855.305
+    ##  5:     5          6300.750
+    ##  6:     6          5871.747
+    ##  7:     7          5751.912
+    ##  8:     8          5680.221
+    ##  9:     9          5528.634
+    ## 10:    10          5845.746
+    ## 11:    11          6257.749
+    ## 12:    12          7318.434
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
+The ratios drop, but December still has the highest ratio. Let us remove both Promo and Holidays:
+
+Ratio of Monthly Sales to Stores Open (no promos and holidays, Promo2 still included)
+
+    ##     Month MonthlySalesRatio
+    ##  1:     1          5487.487
+    ##  2:     2          5772.596
+    ##  3:     3          5803.841
+    ##  4:     4          5772.121
+    ##  5:     5          6230.209
+    ##  6:     6          5847.752
+    ##  7:     7          5688.635
+    ##  8:     8          5805.399
+    ##  9:     9          5525.473
+    ## 10:    10          5841.588
+    ## 11:    11          6247.460
+    ## 12:    12          7006.962
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-28-1.png)
+
+Combining the three plots:
+
+    ##     Month MonthlySalesRatio MonthlySalesRatio_NoPromo
+    ##  1:     1          6563.690                  5591.904
+    ##  2:     2          6589.166                  5747.813
+    ##  3:     3          6976.412                  5805.724
+    ##  4:     4          7046.228                  5855.305
+    ##  5:     5          7106.453                  6300.750
+    ##  6:     6          7000.978                  5871.747
+    ##  7:     7          6952.682                  5751.912
+    ##  8:     8          6648.985                  5680.221
+    ##  9:     9          6546.343                  5528.634
+    ## 10:    10          6602.843                  5845.746
+    ## 11:    11          7188.554                  6257.749
+    ## 12:    12          8608.957                  7318.434
+    ##     MonthlySalesRatio_NoPromo_NoHoliday
+    ##  1:                            5487.487
+    ##  2:                            5772.596
+    ##  3:                            5803.841
+    ##  4:                            5772.121
+    ##  5:                            6230.209
+    ##  6:                            5847.752
+    ##  7:                            5688.635
+    ##  8:                            5805.399
+    ##  9:                            5525.473
+    ## 10:                            5841.588
+    ## 11:                            6247.460
+    ## 12:                            7006.962
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-29-1.png)
+
+Sales broken down into Promo:
+
+    ##     Month MonthlySales_NoPromo MonthlySales_Promo
+    ##  1:     1            268663039          298065685
+    ##  2:     2            269601161          259133249
+    ##  3:     3            260386701          339445205
+    ##  4:     4            256860539          319034756
+    ##  5:     5            277176280          292071937
+    ##  6:     6            277228671          300884104
+    ##  7:     7            256374200          338685005
+    ##  8:     8            175780115          186011087
+    ##  9:     9            166002767          176567364
+    ## 10:    10            180545850          171332878
+    ## 11:    11            164585061          204913816
+    ## 12:    12            218769953          215061200
+
+    ##     Month MonthlySalesPercentage_NoPromo MonthlySalesPercentage_Promo
+    ##  1:     1                          47.41                        52.59
+    ##  2:     2                          50.99                        49.01
+    ##  3:     3                          43.41                        56.59
+    ##  4:     4                          44.60                        55.40
+    ##  5:     5                          48.69                        51.31
+    ##  6:     6                          47.95                        52.05
+    ##  7:     7                          43.08                        56.92
+    ##  8:     8                          48.59                        51.41
+    ##  9:     9                          48.46                        51.54
+    ## 10:    10                          51.31                        48.69
+    ## 11:    11                          44.54                        55.46
+    ## 12:    12                          50.43                        49.57
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-30-1.png)
+
+Normalized Sales vs Number of Open Stores/Month for Promo and Without Promo:
+
+    ##     Month MonthlySalesNormalized_NoPromo MonthlySalesNormalized_Promo
+    ##  1:     1                       5591.904                     7782.800
+    ##  2:     2                       5747.813                     7772.909
+    ##  3:     3                       5805.724                     8252.983
+    ##  4:     4                       5855.305                     8426.030
+    ##  5:     5                       6300.750                     8087.947
+    ##  6:     6                       5871.747                     8508.685
+    ##  7:     7                       5751.912                     8257.589
+    ##  8:     8                       5680.221                     7926.496
+    ##  9:     9                       5528.634                     7916.399
+    ## 10:    10                       5845.746                     7646.400
+    ## 11:    11                       6257.749                     8163.897
+    ## 12:    12                       7318.434                    10490.790
+    ##     MonthlySalesNormalized_Total
+    ##  1:                     6563.690
+    ##  2:                     6589.166
+    ##  3:                     6976.412
+    ##  4:                     7046.228
+    ##  5:                     7106.453
+    ##  6:                     7000.978
+    ##  7:                     6952.682
+    ##  8:                     6648.985
+    ##  9:                     6546.343
+    ## 10:                     6602.843
+    ## 11:                     7188.554
+    ## 12:                     8608.957
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-31-1.png)
+
+Sales vs Number of Stores Open
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 Yearly Sales
 
     ## Warning in gsum(Sales): Group 1 summed to more than type 'integer' can hold
     ## so the result has been coerced to 'numeric' automatically, for convenience.
 
-![](data_exploration1_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-33-1.png)
 
 Ratio of Yearly Sales to Stores Open
 
@@ -320,4 +472,4 @@ Ratio of Yearly Sales to Stores Open
     ## 2: 2014         7025.404
     ## 3: 2015         7088.127
 
-![](data_exploration1_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-34-1.png)
