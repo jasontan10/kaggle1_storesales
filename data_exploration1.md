@@ -1,4 +1,24 @@
+    ## Warning: package 'dtplyr' was built under R version 3.3.3
+
     ## Warning: package 'knitr' was built under R version 3.3.3
+
+    ## Loading required package: zoo
+
+    ## Warning: package 'zoo' was built under R version 3.3.3
+
+    ## 
+    ## Attaching package: 'zoo'
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     as.Date, as.Date.numeric
+
+    ## 
+    ## Attaching package: 'xts'
+
+    ## The following objects are masked from 'package:data.table':
+    ## 
+    ##     first, last
 
 Introduction
 ------------
@@ -473,3 +493,58 @@ Ratio of Yearly Sales to Stores Open
     ## 3: 2015         7088.127
 
 ![](data_exploration1_files/figure-markdown_github/unnamed-chunk-34-1.png)
+
+Competitor
+----------
+
+I want to look at competitor information, and see if it has any obvious relationships first.
+
+Distance of Competitor:
+
+    ## Warning: Removed 613 rows containing non-finite values (stat_bin).
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-35-1.png)
+
+Average competitor distance based on year opening
+
+    ## Warning: Removed 408 rows containing non-finite values (stat_boxplot).
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-36-1.png)
+
+Do competitor(s) has/have a preference for opening month?
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-37-1.png)
+
+How about what year they opened?
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-38-1.png)
+
+How does competition affect sales?
+
+Sales data starts from 2013-01-01 to 2015-07-31. Let's find a store with a competitor that opened between those times.
+
+    ## There are 191 stores with nearest competitors that opened 2013 onwards
+
+The data does not state the next nearest competitor, nor when that competitor opened. Therefore, we will look at the distribution of sales impact by nearest competitor opening to take into account unmeasureable variations (we cannot measure the effects of number of competitors within a certain meter radius for example).
+
+This analysis is a little tricky because of time. For example, is there growth that we need to take into account? Let's sidetrack a bit to see a store's performance over time. Here are stores that I will be doing an initial view of:
+
+Assortment -- Store \# a -- 30 b -- none c -- 103
+
+    ## `geom_smooth()` using method = 'loess'
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-40-1.png)
+
+    ## `geom_smooth()` using method = 'loess'
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-40-2.png)
+
+    ## `geom_smooth()` using method = 'loess'
+
+![](data_exploration1_files/figure-markdown_github/unnamed-chunk-40-3.png)
+
+Let's add in competition
